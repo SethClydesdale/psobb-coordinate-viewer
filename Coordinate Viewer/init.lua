@@ -105,7 +105,7 @@ local function present()
   end
 
   if options.EnableWindow then
-    imgui.SetNextWindowSize(150, 80, "FirstUseEver");
+    imgui.SetNextWindowSize(150, 80, "Always");
     
     if imgui.Begin("Coordinate Viewer", nil, { options.NoTitleBar, options.NoResize }) then
       imgui.SetWindowFontScale(options.fontScale)
@@ -131,7 +131,7 @@ local function init()
   
   return {
     name = "Coordinate Viewer",
-    version = "1.0.0",
+    version = "1.0.1",
     author = "Seth Clydesdale",
     description = "Tool for viewing your XYZ coordinates.",
     present = present
