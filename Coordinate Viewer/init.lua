@@ -52,24 +52,25 @@ local function SaveOptions(options)
   end
 end
 
-
--- pointer
-local PlayerPointer = 0x00A94254
+-- player data
+local _PlayerArray = 0x00A94254
+local _PlayerIndex = 0x00A9C4F4
 
 -- shows your coordinates
 local showCoordinates = function()
-  local CoordAddress = pso.read_u32(PlayerPointer)
+  local playerIndex = pso.read_u32(_PlayerIndex)
+  local playerAddr = pso.read_u32(_PlayerArray + 4 * playerIndex)
   
-  if CoordAddress ~= 0 then
-    local X = pso.read_f32(CoordAddress + 0x38)
-    local Y = pso.read_f32(CoordAddress + 0x40)
+  if playerAddr ~= 0 then
+    local X = pso.read_f32(playerAddr + 0x38)
+    local Y = pso.read_f32(playerAddr + 0x40)
     
     imgui.Text(string.format("X : %.3f", X))
     imgui.Text(string.format("Y : %.3f", Y))
     
     -- show Z coordinate if enabled
     if options.ShowZ then
-      local Z = pso.read_f32(CoordAddress + 0x3C)
+      local Z = pso.read_f32(playerAddr + 0x3C)
       imgui.Text(string.format("Z : %.3f", Z))
     end
     
@@ -131,9 +132,9 @@ local function init()
   
   return {
     name = "Coordinate Viewer",
-    version = "1.0.1",
+    version = "1.0.2",
     author = "Seth Clydesdale",
-    description = "Tool for viewing your XYZ coordinates.",
+    description = "Displays your X, Y, and Z coordinates.",
     present = present
   }
 end
