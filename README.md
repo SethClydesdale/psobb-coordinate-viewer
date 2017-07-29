@@ -11,6 +11,10 @@ A little PSOBB addon that shows your X, Y, and Z coordinates.
 
 ### Change Log
 
+#### v1.0.3
+- Swapped the Y and Z coordinates back to their original positions.
+- Removed "Show Z Coordinate" configuration option.
+
 #### v1.0.2
 - Fixed incorrect coordinates displaying when the player was the 2nd, 3rd, etc.. player in the lobby. (thanks to soly and staphen for helping me find the correct index)
 

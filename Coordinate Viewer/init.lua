@@ -16,7 +16,6 @@ if optionsLoaded then
   options.NoResize = options.NoResize or ""
   options.Transparent = options.Transparent == nil and true or options.Transparent
   options.fontScale = options.fontScale or 1.0
-  options.ShowZ = options.ShowZ == nil and true or options.ShowZ
 else
   options = {
     configurationEnableWindow = true,
@@ -26,7 +25,6 @@ else
     NoResize = "",
     Transparent = false,
     fontScale = 1.0,
-    ShowZ = false,
   }
 end
 
@@ -45,7 +43,6 @@ local function SaveOptions(options)
     io.write(string.format("  NoResize = \"%s\",\n", options.NoResize))
     io.write(string.format("  Transparent = %s,\n", tostring(options.Transparent)))
     io.write(string.format("  fontScale = %s,\n", tostring(options.fontScale)))
-    io.write(string.format("  ShowZ = %s,\n", tostring(options.ShowZ)))
     io.write("}\n")
 
     io.close(file)
@@ -62,25 +59,19 @@ local showCoordinates = function()
   local playerAddr = pso.read_u32(_PlayerArray + 4 * playerIndex)
   
   if playerAddr ~= 0 then
-    local X = pso.read_f32(playerAddr + 0x38)
-    local Y = pso.read_f32(playerAddr + 0x40)
+    local X = pso.read_f32(playerAddr + 0x38) -- left/right
+    local Y = pso.read_f32(playerAddr + 0x3C) -- up/down
+    local Z = pso.read_f32(playerAddr + 0x40) -- out/in
     
     imgui.Text(string.format("X : %.3f", X))
     imgui.Text(string.format("Y : %.3f", Y))
-    
-    -- show Z coordinate if enabled
-    if options.ShowZ then
-      local Z = pso.read_f32(playerAddr + 0x3C)
-      imgui.Text(string.format("Z : %.3f", Z))
-    end
+    imgui.Text(string.format("Z : %.3f", Z))
     
   -- show placeholder if the pointer is null
   else
     imgui.Text("X : 0")
     imgui.Text("Y : 0")
-    if options.ShowZ then
-      imgui.Text("Z : 0")
-    end
+    imgui.Text("Z : 0")
   end
 end
 
@@ -132,7 +123,7 @@ local function init()
   
   return {
     name = "Coordinate Viewer",
-    version = "1.0.2",
+    version = "1.0.3",
     author = "Seth Clydesdale",
     description = "Displays your X, Y, and Z coordinates.",
     present = present

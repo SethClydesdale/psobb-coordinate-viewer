@@ -43,11 +43,6 @@ local function ConfigurationWindow(configuration)
     if success then
       this.changed = true
     end
-    
-    if imgui.Checkbox("Show Z Coordinate", _configuration.ShowZ) then
-      _configuration.ShowZ = not _configuration.ShowZ
-      this.changed = true
-    end
   end
 
   this.Update = function()
