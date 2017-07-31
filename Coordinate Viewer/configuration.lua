@@ -11,6 +11,7 @@ local function ConfigurationWindow(configuration)
   local _showWindowSettings = function()
     local success
 
+    imgui.Text("General Settings")
     if imgui.Checkbox("Enable", _configuration.EnableWindow) then
       _configuration.EnableWindow = not _configuration.EnableWindow
       this.changed = true
@@ -41,6 +42,49 @@ local function ConfigurationWindow(configuration)
     
     success, _configuration.fontScale = imgui.InputFloat("Font Scale", _configuration.fontScale)
     if success then
+      this.changed = true
+    end
+    
+    
+    imgui.Text("\nPosition and Size")
+    imgui.PushItemWidth(100)
+    success, _configuration.X = imgui.InputInt("X", _configuration.X)
+    imgui.PopItemWidth()
+    if success then
+      _configuration.Changed = true
+      this.changed = true
+    end
+    
+    imgui.SameLine(0, 38)
+    imgui.PushItemWidth(100)
+    success, _configuration.Y = imgui.InputInt("Y", _configuration.Y)
+    imgui.PopItemWidth()
+    if success then
+      _configuration.Changed = true
+      this.changed = true
+    end
+    
+    imgui.PushItemWidth(100)
+    success, _configuration.Width = imgui.InputInt("Width", _configuration.Width)
+    imgui.PopItemWidth()
+    if success then
+      _configuration.Changed = true
+      this.changed = true
+    end
+    
+    imgui.SameLine(0, 10)
+    imgui.PushItemWidth(100)
+    success, _configuration.Height = imgui.InputInt("Height", _configuration.Height)
+    imgui.PopItemWidth()
+    if success then
+      _configuration.Changed = true
+      this.changed = true
+    end
+    
+    
+    imgui.Text("\nCoordinate Viewer Options")
+    if imgui.Checkbox("Use High Contrast Color", _configuration.HighContrast) then
+      _configuration.HighContrast = not _configuration.HighContrast
       this.changed = true
     end
   end

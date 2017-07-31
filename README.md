@@ -7,9 +7,14 @@ A little PSOBB addon that shows your X, Y, and Z coordinates.
 3. Drag and drop the **Coordinate Viewer** addon into the /addons directory in your PSOBB folder.
 
 ### Preview
-[![](https://i11.servimg.com/u/f11/18/21/41/30/pso13115.jpg)](https://i11.servimg.com/u/f11/18/21/41/30/pso13115.jpg)
+[![](https://i11.servimg.com/u/f11/18/21/41/30/pso13117.jpg)](https://i11.servimg.com/u/f11/18/21/41/30/pso13117.jpg)
 
 ### Change Log
+
+#### v1.1.0
+- Added High Contrast Color option to configuration.
+- Added position and size options to configuration.
+- Fixed window width and height not being maintained.
 
 #### v1.0.4
 - Fixed not being able to resize the window.
