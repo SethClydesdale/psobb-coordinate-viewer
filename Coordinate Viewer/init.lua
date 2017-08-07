@@ -1,6 +1,7 @@
 -- imports
 local core_mainmenu = require("core_mainmenu")
 local cfg = require("Coordinate Viewer.configuration")
+local lib_theme_loaded, lib_theme = pcall(require, "Theme Editor.theme")
 
 -- options
 local optionsLoaded, options = pcall(require, "Coordinate Viewer.options")
@@ -13,6 +14,7 @@ if optionsLoaded then
   options.configurationEnableWindow = options.configurationEnableWindow == nil and true or options.configurationEnableWindow
   options.enable = options.enable == nil and true or options.enable
   options.EnableWindow = options.EnableWindow == nil and true or options.EnableWindow
+  options.useCustomTheme = options.useCustomTheme == nil and false or options.useCustomTheme
   options.NoTitleBar = options.NoTitleBar or ""
   options.NoResize = options.NoResize or ""
   options.Transparent = options.Transparent == nil and false or options.Transparent
@@ -28,6 +30,7 @@ else
     configurationEnableWindow = true,
     enable = true,
     EnableWindow = true,
+    useCustomTheme = false,
     NoTitleBar = "",
     NoResize = "",
     Transparent = false,
@@ -52,6 +55,7 @@ local function SaveOptions(options)
     io.write(string.format("  enable = %s,\n", tostring(options.enable)))
     io.write("\n")
     io.write(string.format("  EnableWindow = %s,\n", tostring(options.EnableWindow)))
+    io.write(string.format("  useCustomTheme = %s,\n", tostring(options.useCustomTheme)))
     io.write(string.format("  NoTitleBar = \"%s\",\n", options.NoTitleBar))
     io.write(string.format("  NoResize = \"%s\",\n", options.NoResize))
     io.write(string.format("  Transparent = %s,\n", tostring(options.Transparent)))
@@ -134,6 +138,10 @@ local function present()
     return
   end
   
+  if lib_theme_loaded and options.useCustomTheme then
+    lib_theme.Push()
+  end
+  
   if options.Transparent == true then
     imgui.PushStyleColor("WindowBg", 0.0, 0.0, 0.0, 0.0)
   end
@@ -158,6 +166,10 @@ local function present()
     imgui.PopStyleColor()
   end
   
+  if lib_theme_loaded and options.useCustomTheme then
+    lib_theme.Pop()
+  end
+  
   if firstPresent then
     firstPresent = false
   end
@@ -165,7 +177,7 @@ end
 
 
 local function init()
-  ConfigurationWindow = cfg.ConfigurationWindow(options)
+  ConfigurationWindow = cfg.ConfigurationWindow(options, lib_theme_loaded)
 
   local function mainMenuButtonHandler()
     ConfigurationWindow.open = not ConfigurationWindow.open
@@ -173,9 +185,13 @@ local function init()
 
   core_mainmenu.add_button("Coordinate Viewer", mainMenuButtonHandler)
   
+  if lib_theme_loaded == false then
+    print("Coordinate Viewer : lib_theme couldn't be loaded")
+  end
+  
   return {
     name = "Coordinate Viewer",
-    version = "1.1.0",
+    version = "1.2.0",
     author = "Seth Clydesdale",
     description = "Displays your X, Y, and Z coordinates.",
     present = present

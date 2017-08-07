@@ -1,4 +1,4 @@
-local function ConfigurationWindow(configuration)
+local function ConfigurationWindow(configuration, customTheme)
   local this = {
     title = "Coordinate Viewer - Configuration",
     fontScale = 1.0,
@@ -15,6 +15,13 @@ local function ConfigurationWindow(configuration)
     if imgui.Checkbox("Enable", _configuration.EnableWindow) then
       _configuration.EnableWindow = not _configuration.EnableWindow
       this.changed = true
+    end
+    
+    if customTheme then
+      if imgui.Checkbox("Use custom theme", _configuration.useCustomTheme) then
+          _configuration.useCustomTheme = not _configuration.useCustomTheme
+          this.changed = true
+      end
     end
 
     if imgui.Checkbox("No title bar", _configuration.NoTitleBar == "NoTitleBar") then
